@@ -1,36 +1,41 @@
 from datetime import datetime
 
-# Please remove the comments and 
-# create these classes as it corresponds:
-# (your tests will fail if you don't comment out these classes)
+class Post(object):
+    def __init__(self, text, timestamp=None):
+        self.text = text
+        self.timestamp = timestamp.strftime("%A, %b %d, %Y")
+        self.user = None
 
-# class Post(object):
-#     def __init__(self, text, timestamp=None):
-#         pass
-#
-#     def set_user(self, user):
-#         pass
+    def set_user(self, user):
+        self.user = user
+        
+
+class TextPost(Post):
+    def __init__(self, text, timestamp=None):
+        super(TextPost, self).__init__(text, timestamp)
+
+    def __str__(self):
+        result = '@{fname} {lname}: "{text}"\n\t{date}'.format(fname=self.user.first_name, lname=self.user.last_name, text=self.text, date=self.timestamp)
+        return result
+    
+
+class PicturePost(Post):
+    def __init__(self, text, image_url, timestamp=None):
+        PicturePost.image_url = image_url
+        super(PicturePost, self).__init__(text, timestamp)
+        
+    def __str__(self):
+        result = '@{fname} {lname}: "{text}"\n\t{url}\n\t{date}'.format(
+                fname=self.user.first_name, lname=self.user.last_name, text=self.text, url=self.image_url, date=self.timestamp)
+        return result
 
 
-# class TextPost(...):  # Inherit properly
-#     def __init__(self, text, timestamp=None):
-#         pass
-#
-#     def __str__(self):
-#         pass
+class CheckInPost(Post):
+    def __init__(self, text, latitude, longitude, timestamp=None):
+        CheckInPost.latitude = latitude
+        CheckInPost.longitude = longitude
+        super(CheckInPost, self).__init__(text, timestamp)
 
-
-# class PicturePost(...):  # Inherit properly
-#     def __init__(self, text, image_url, timestamp=None):
-#         pass
-#
-#     def __str__(self):
-#         pass
-
-
-# class CheckInPost(...):  # Inherit properly
-#     def __init__(self, text, latitude, longitude, timestamp=None):
-#         pass
-#
-#     def __str__(self):
-#         pass
+    def __str__(self):
+        result = '@{fname} Checked In: "{text}"\n\t{lat}, {lon}\n\t{date}'.format(fname=self.user.first_name, text=self.text, lat=self.latitude, lon=self.longitude, date=self.timestamp)
+        return result
